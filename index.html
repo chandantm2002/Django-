@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Clocks</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .clock-row {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .clock-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .clock {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border: 8px solid #333;
+            border-radius: 50%;
+            background: #fff;
+        }
+        .hand {
+            position: absolute;
+            width: 50%;
+            height: 2px;
+            background: black;
+            top: 50%;
+            transform-origin: 100%;
+            transform: rotate(90deg);
+        }
+        .hour-hand {
+            height: 4px;
+            background: #333;
+        }
+        .minute-hand {
+            height: 3px;
+        }
+        .second-hand {
+            background: red;
+            height: 2px;
+        }
+        .city-time {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        .city-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .digital-time {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-row" id="row1">
+        <!-- First row clocks will be dynamically generated here -->
+    </div>
+    <div class="clock-row" id="row2">
+        <!-- Second row clocks will be dynamically generated here -->
+    </div>
+
+    <script>
+        const cities = [
+            { name: 'Los Angeles', timeZone: 'America/Los_Angeles' },
+            { name: 'New York', timeZone: 'America/New_York' },
+            { name: 'London', timeZone: 'Europe/London' },
+            { name: 'Dubai', timeZone: 'Asia/Dubai' },
+            { name: 'Bangalore', timeZone: 'Asia/Kolkata' },
+            { name: 'Singapore', timeZone: 'Asia/Singapore' },
+            { name: 'Tokyo', timeZone: 'Asia/Tokyo' },
+            { name: 'Sydney', timeZone: 'Australia/Sydney' }
+        ];
+
+        function createClock(city, rowId) {
+            const container = document.createElement('div');
+            container.className = 'clock-container';
+
+            const clock = document.createElement('div');
+            clock.className = 'clock';
+            
+            const hourHand = document.createElement('div');
+            hourHand.className = 'hand hour-hand';
+            const minuteHand = document.createElement('div');
+            minuteHand.className = 'hand minute-hand';
+            const secondHand = document.createElement('div');
+            secondHand.className = 'hand second-hand';
+
+            clock.appendChild(hourHand);
+            clock.appendChild(minuteHand);
+            clock.appendChild(secondHand);
+
+            const cityTime = document.createElement('div');
+            cityTime.className = 'city-time';
+            const cityName = document.createElement('div');
+            cityName.className = 'city-name';
+            cityName.textContent = city.name;
+
+            const digitalTime = document.createElement('div');
+            digitalTime.className = 'digital-time';
+            digitalTime.id = `${city.name}-time`;
+
+            cityTime.appendChild(cityName);
+            cityTime.appendChild(digitalTime);
+
+            container.appendChild(clock);
+            container.appendChild(cityTime);
+
+            document.getElementById(rowId).appendChild(container);
+
+            return { hourHand, minuteHand, secondHand, digitalTime, timeZone: city.timeZone };
+        }
+
+        function updateClock(clock) {
+            const now = new Date();
+            const options = { timeZone: clock.timeZone, hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false };
+            const formatter = new Intl.DateTimeFormat('en-US', options);
+            const parts = formatter.formatToParts(now);
+            const hour = parseInt(parts.find(p => p.type === 'hour').value);
+            const minute = parseInt(parts.find(p => p.type === 'minute').value);
+            const second = parseInt(parts.find(p => p.type === 'second').value);
+
+            const hoursDegrees = ((hour % 12) / 12) * 360 + (minute / 60) * 30 + 90;
+            const minutesDegrees = (minute / 60) * 360 + (second / 60) * 6 + 90;
+            const secondsDegrees = (second / 60) * 360 + 90;
+
+            clock.hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+            clock.minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+            clock.secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+            const optionsDate = { timeZone: clock.timeZone, weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+            const formattedTime = new Intl.DateTimeFormat('en-US', optionsDate).format(now);
+            clock.digitalTime.textContent = formattedTime;
+        }
+
+        const firstRowCities = cities.slice(0, 4);
+        const secondRowCities = cities.slice(4);
+
+        const firstRowClocks = firstRowCities.map(city => createClock(city, 'row1'));
+        const secondRowClocks = secondRowCities.map(city => createClock(city, 'row2'));
+
+        const allClocks = [...firstRowClocks, ...secondRowClocks];
+
+        function updateClocks() {
+            allClocks.forEach(updateClock);
+        }
+
+        setInterval(updateClocks, 1000);
+        updateClocks();
+    </script>
+</body>
+</html>
