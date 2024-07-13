@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+        <p>Factorial of Numbers</p>
+        {% if param1 %}
+            {% for i, j in param1 %}
+                <p>Factorial of {{ j }} - {{ i }}</p>
+            {% endfor %}
+        {% endif %}
+    </body>
+</html>
