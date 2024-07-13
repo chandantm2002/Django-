@@ -1,0 +1,15 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Furniture Detail</title>
+</head>
+<body>
+    <h1>{{ furniture.furniture_name }}</h1>
+    <p>Type: {{ furniture.furniture_type }}</p>
+    <p>Features: {{ furniture.features }}</p>
+    <p>Price: {{ furniture.price }}</p>
+    <p>Material Used: {{ furniture.material_used }}</p>
+    <a href="{% url 'customer-list' %}">Back to Customer List</a>
+</body>
+</html>

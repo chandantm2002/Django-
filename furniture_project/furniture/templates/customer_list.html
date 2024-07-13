@@ -1,0 +1,25 @@
+<!-- furniture/templates/customer_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer List</title>
+</head>
+<body>
+    <h1>Customer List</h1>
+    <ul>
+        {% for customer in customers %}
+            <li>
+                {{ customer.customername }} - {{ customer.cphone }} - {{ customer.cemail }}
+                <ul>
+                    {% for furniture in customer.purchase.all %}
+                        <li>
+                            <a href="{% url 'furniture-detail' furniture.pk %}">{{ furniture.furniture_name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
