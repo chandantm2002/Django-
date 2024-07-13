@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Customer</title>
+</head>
+<body>
+    <h5>NAME:-DAMINI K M </h5>
+    <h5>USN:-1DT21IS043</h5>
+    <h1>Select Customer</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">View Purchases</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Purchases by {{ customer.customer_name }}</title>
+</head>
+<body>
+    <h1>Purchases by {{ customer.customer_name }}</h1>
+    <ul>
+        {% for purchase in purchases %}
+            <li>{{ purchase.flower.flower_name }}: ${{ purchase.flower.price }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'display_purchases' %}">Back</a>
+</body>
+</html>
