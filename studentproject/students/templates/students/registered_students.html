@@ -1,0 +1,24 @@
+<!-- students/templates/students/registered_students.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registered Students</title>
+</head>
+<body>
+    <h5>NAME:BHARATH N C</h5>
+    <h5>USN:-1DT22IS404</h5>
+    <h1>Registered Students</h1>
+    <ul>
+        {% for student in students %}
+            <li>
+                {{ student.name }}: {{ student.age }} years old
+                {% if student.age >= 18 %}
+                    (Major)
+                {% else %}
+                    (Minor)
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
