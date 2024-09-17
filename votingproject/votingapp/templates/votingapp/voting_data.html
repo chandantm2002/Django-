@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voting Data</title>
+    <style>
+        .highlight {
+            font-size: larger;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h5>NAME:BHARATH N C</h5>
+    <h5>USN:-1DT22IS404</h5>
+    <h1>Voting Data</h1>
+    <ul>
+        {% for state, percentage in data %}
+            <li>
+                {{ state }}: 
+                <span class="{% if percentage > 80 %}highlight{% endif %}">
+                    {{ percentage }}%
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
