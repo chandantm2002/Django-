@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Results</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#usnForm').on('submit', function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: '{% url "get_results" %}',
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    success: function(data){
+                        $('#results').empty();
+                        if (data.results.length > 0) {
+                            $('#results').append('<h3>Results for ' + data.student_name + '</h3>');
+                            var table = '<table border="1"><tr><th>Subject Code</th><th>Subject Name</th><th>CIE Marks</th><th>SEE Marks</th></tr>';
+                            $.each(data.results, function(index, result){
+                                table += '<tr><td>' + result.subject_code + '</td><td>' + result.subject_name + '</td><td>' + result.cie_marks + '</td><td>' + result.see_marks + '</td></tr>';
+                            });
+                            table += '</table>';
+                            $('#results').append(table);
+                        } else {
+                            $('#results').append('<p>No results found.</p>');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h5>NAME:CHANDAN T M</h5>
+    <h5>USN:-1DT22IS404</h5>
+    <h1>Enter USN to get results</h1>
+    <form id="usnForm" method="get">
+        {{ form.as_p }}
+        <button type="submit">Submit</button>
+    </form>
+    <div id="results"></div>
+</body>
+</html>
