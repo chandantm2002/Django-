@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results</title>
+</head>
+<body>
+    <h5>NAME:BHARATH N C</h5>
+    <h5>USN:-1DT22IS404</h5>
+    <h1>Search Results</h1>
+    <ul>
+        {% for channel in channels %}
+            <li>{{ channel.channel_name }} - {{ channel.channelnum }} - {{ channel.language }} - {{ channel.channeltype }} - {{ channel.number_of_viewers }} viewers</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
